@@ -768,3 +768,220 @@ body {
     text-transform: capitalize;
     letter-spacing: 0.3px;
 }
+
+/* ====================================================================
+   ENHANCED DASHBOARD LAYOUTS - NO SCROLLING
+   ==================================================================== */
+
+.dashboard-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    height: calc(100vh - 140px);
+    overflow: hidden;
+}
+
+.left-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.right-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.kpi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+}
+
+.action-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.compact-table {
+    background: var(--bg-white);
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.compact-table h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--primary);
+}
+
+.compact-table table {
+    width: 100%;
+    font-size: 12px;
+}
+
+.compact-table table th {
+    padding: 8px 6px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.compact-table table td {
+    padding: 8px 6px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.analytics-section {
+    background: var(--bg-white);
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+}
+
+.analytics-section h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.mini-chart {
+    height: 200px;
+    margin-bottom: 16px;
+}
+
+.action-btn-large {
+    padding: 14px 28px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: var(--shadow-md);
+}
+
+.action-btn-large:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.action-btn-secondary {
+    background: var(--accent);
+    color: var(--text-primary);
+}
+
+.action-btn-secondary:hover {
+    background: var(--accent-dark);
+}
+
+/* Full-width order/customer lists */
+.full-width-list {
+    background: var(--bg-white);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+    height: calc(100vh - 180px);
+    display: flex;
+    flex-direction: column;
+}
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--primary);
+}
+
+.list-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.list-content {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* Compact KPI Cards */
+.kpi-compact {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-fast);
+}
+
+.kpi-compact:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.kpi-compact .kpi-value {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.kpi-compact .kpi-label {
+    font-size: 11px;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.kpi-compact .kpi-link {
+    color: white;
+    text-decoration: none;
+    font-size: 11px;
+    opacity: 0.8;
+    transition: var(--transition-fast);
+}
+
+.kpi-compact .kpi-link:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .dashboard-container {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+    
+    .left-section, .right-section {
+        overflow-y: visible;
+    }
+}

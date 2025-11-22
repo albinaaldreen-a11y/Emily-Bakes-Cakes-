@@ -994,3 +994,98 @@ document.addEventListener('click', function(event) {
         closeModal(event.target.id);
     }
 });
+
+// Populate recent orders table (compact format)
+function populateRecentOrdersTable() {
+    const tbody = document.getElementById('recent-orders-table');
+    if (!tbody) return;
+
+    const recentOrders = dashboardData.orders.slice(0, 5);
+
+    if (recentOrders.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 16px;">No orders found</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = recentOrders.map(order => `
+        <tr>
+            <td>${order.orderId}</td>
+            <td>${order.customerName}</td>
+            <td><span class="status-badge badge-${order.status.toLowerCase().replace(' ', '-')}">${order.status}</span></td>
+            <td>$${order.total.toFixed(2)}</td>
+        </tr>
+    `).join('');
+}
+
+// Populate today's pickups table (compact format)
+function populateTodaysPickupsCompact() {
+    const tbody = document.getElementById('todays-pickups-table');
+    if (!tbody) return;
+
+    const todayPickups = getTodaysPickups();
+
+    if (todayPickups.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 16px;">No pickups scheduled</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = todayPickups.map(order => `
+        <tr>
+            <td>${order.pickupTime || 'TBD'}</td>
+            <td>${order.customerName}</td>
+            <td>${order.cakeType}</td>
+            <td><span class="status-badge badge-${order.status.toLowerCase().replace(' ', '-')}">${order.status}</span></td>
+        </tr>
+    `).join('');
+}
+
+// Populate tomorrow's schedule (compact format)
+function populateTomorrowsScheduleCompact() {
+    const container = document.getElementById('tomorrows-schedule');
+    if (!container) return;
+
+    const tomorrowOrders = getTomorrowsOrders();
+
+    if (tomorrowOrders.length === 0) {
+        container.innerHTML = '<p style="text-align: center; padding: 16px; color: #6B7280;">No orders scheduled for tomorrow</p>';
+        return;
+    }
+
+    container.innerHTML = `
+        <table style="width: 100%;">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Customer</th>
+                    <th>Cake</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${tomorrowOrders.map(order => `
+                    <tr>
+                        <td>${order.pickupTime || 'TBD'}</td>
+                        <td>${order.customerName}</td>
+                        <td>${order.cakeType}</td>
+                        <td><span class="status-badge badge-${order.status.toLowerCase().replace(' ', '-')}">${order.status}</span></td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
+}
+
+// Get tomorrow's orders
+function getTomorrowsOrders() {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+
+    const dayAfterTomorrow = new Date(tomorrow);
+    dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 1);
+
+    return dashboardData.orders.filter(order => {
+        const pickupDate = new Date(order.pickupDate);
+        return pickupDate >= tomorrow && pickupDate < dayAfterTomorrow;
+    });
+}

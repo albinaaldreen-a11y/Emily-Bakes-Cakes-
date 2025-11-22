@@ -424,11 +424,9 @@
     <nav class="nav-sidebar">
         <ul>
             <li><a href="index.html" class="nav-link">📊 Dashboard</a></li>
-            <li><a href="all-orders.html" class="nav-link active">📋 All Orders</a></li>
-            <li><a href="all-customers.html" class="nav-link">👥 All Customers</a></li>
-            <li><a href="new-customer.html" class="nav-link">➕ New Customer</a></li>
-            <li><a href="../order-form.html" class="nav-link">🎂 Order Form</a></li>
-            <li><a href="settings.html" class="nav-link">⚙️ Settings</a></li>
+            <li><a href="all-orders.html" class="nav-link active">📋 View Orders</a></li>
+            <li><a href="all-customers.html" class="nav-link">👥 View Customers</a></li>
+            <li><a href="reports.html" class="nav-link">📈 Reports</a></li>
         </ul>
     </nav>
 
@@ -436,29 +434,12 @@
     <main class="main-content">
         <div class="content">
             <!-- PAGE HEADER -->
-            <div class="page-header">
-                <h1 class="page-title">All Orders</h1>
-                <p class="page-subtitle">Manage and track all customer orders</p>
-            </div>
-
-            <!-- STATS -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-value" id="stat-total">0</div>
-                    <div class="stat-label">Total Orders</div>
+            <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <div>
+                    <h1 class="page-title">All Orders</h1>
+                    <p class="page-subtitle">Manage and track all customer orders</p>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="stat-pending">0</div>
-                    <div class="stat-label">Pending</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="stat-confirmed">0</div>
-                    <div class="stat-label">Confirmed</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="stat-completed">0</div>
-                    <div class="stat-label">Completed</div>
-                </div>
+                <a href="../order-form.html" class="action-btn-large" style="text-decoration: none;">+ Create New Order</a>
             </div>
 
             <!-- FILTERS -->
@@ -632,7 +613,6 @@
 
         function initializePage() {
             loadOrders();
-            updateStats();
         }
 
         function loadOrders() {
@@ -662,17 +642,6 @@
             `).join('');
         }
 
-        function updateStats() {
-            const total = allOrders.length;
-            const pending = allOrders.filter(o => o.status === 'pending').length;
-            const confirmed = allOrders.filter(o => o.status === 'confirmed').length;
-            const completed = allOrders.filter(o => o.status === 'completed').length;
-
-            document.getElementById('stat-total').textContent = total;
-            document.getElementById('stat-pending').textContent = pending;
-            document.getElementById('stat-confirmed').textContent = confirmed;
-            document.getElementById('stat-completed').textContent = completed;
-        }
 
         function filterOrders() {
             const search = document.getElementById('searchInput').value.toLowerCase();
@@ -742,7 +711,6 @@
 
             allOrders = allOrders.filter(o => o.id !== orderId);
             filteredOrders = filteredOrders.filter(o => o.id !== orderId);
-            updateStats();
             loadOrders();
         }
 
@@ -759,7 +727,6 @@
                 order.pickupDate = document.getElementById('editPickupDate').value;
                 order.notes = document.getElementById('editNotes').value;
 
-                updateStats();
                 filterOrders();
                 closeModal('editModal');
                 alert('Order updated successfully!');

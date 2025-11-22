@@ -38,134 +38,114 @@
     <nav class="nav-sidebar">
         <ul>
             <li><a href="index.html" class="nav-link active">📊 Dashboard</a></li>
-            <li><a href="all-orders.html" class="nav-link">📋 All Orders</a></li>
-            <li><a href="all-customers.html" class="nav-link">👥 All Customers</a></li>
-            <li><a href="new-customer.html" class="nav-link">➕ New Customer</a></li>
+            <li><a href="all-orders.html" class="nav-link">📋 View Orders</a></li>
+            <li><a href="all-customers.html" class="nav-link">👥 View Customers</a></li>
             <li><a href="reports.html" class="nav-link">📈 Reports</a></li>
-            <li><a href="settings.html" class="nav-link">⚙️ Settings</a></li>
-            <li><a href="../order-form.html" class="nav-link">🎂 Order Form</a></li>
         </ul>
     </nav>
 
     <!-- MAIN CONTENT -->
     <main class="main-content">
         <div class="content">
-            <!-- SUMMARY CARDS -->
-            <div class="summary-grid">
-                <div class="summary-card">
-                    <div class="card-number" id="pending-pickup-count">0</div>
-                    <div class="card-label">Pending Pickups</div>
-                    <a href="pending_pickups.html" class="card-action">View Details →</a>
+            <!-- KPIs WITH WORKING LINKS -->
+            <div class="kpi-row" style="margin-bottom: 20px;">
+                <div class="kpi-compact" style="background: linear-gradient(135deg, #C44569 0%, #9A3350 100%);">
+                    <div class="kpi-value" id="pending-pickup-count">0</div>
+                    <div class="kpi-label">Today's Pickups</div>
+                    <a href="all-orders.html" class="kpi-link">View Orders →</a>
                 </div>
-                <div class="summary-card">
-                    <div class="card-number" id="todays-orders-count">0</div>
-                    <div class="card-label">Today's Orders</div>
-                    <a href="todays_orders.html" class="card-action">View Details →</a>
+                <div class="kpi-compact" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
+                    <div class="kpi-value" id="todays-orders-count">0</div>
+                    <div class="kpi-label">Total Orders</div>
+                    <a href="all-orders.html" class="kpi-link">View All →</a>
                 </div>
-                <div class="summary-card">
-                    <div class="card-number" id="weekly-revenue">$0.00</div>
-                    <div class="card-label">Weekly Revenue</div>
-                    <a href="reports.html" class="card-action">View Reports →</a>
+                <div class="kpi-compact" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">
+                    <div class="kpi-value" id="weekly-revenue">$0</div>
+                    <div class="kpi-label">Weekly Revenue</div>
+                    <a href="reports.html" class="kpi-link">View Reports →</a>
                 </div>
-                <div class="summary-card">
-                    <div class="card-number" id="new-customers-count">0</div>
-                    <div class="card-label">New Customers</div>
-                    <a href="all-customers.html" class="card-action">View Details →</a>
-                </div>
-            </div>
-
-            <!-- QUICK ACTION BUTTONS -->
-            <div class="action-buttons">
-                <button class="action-btn-primary" onclick="alert('Create New Order - Coming Soon')">+ Create New Order</button>
-                <a href="all-orders.html" class="action-btn-primary">View All Orders</a>
-                <button class="action-btn-primary" onclick="alert('Add Customer - Coming Soon')">+ Add Customer</button>
-                <button class="action-btn-primary" onclick="alert('Find Customer - Coming Soon')">🔍 Find Customer</button>
-                <a href="reports.html" class="action-btn-primary">📊 Financial Reports</a>
-                <button class="action-btn-primary" onclick="alert('Print Daily Summary - Coming Soon')">🖨️ Print Daily Summary</button>
-            </div>
-
-            <!-- STATUS OVERVIEW -->
-            <div class="section-header" style="margin-bottom: 20px;">
-                <h2 class="section-title">Status Overview</h2>
-            </div>
-            <div class="status-boxes">
-                <div class="status-box baking">
-                    <div class="status-number" id="status-baking">0</div>
-                    <div class="status-label">Pending Baking</div>
-                </div>
-                <div class="status-box decorating">
-                    <div class="status-number" id="status-decorating">0</div>
-                    <div class="status-label">Pending Decorating</div>
-                </div>
-                <div class="status-box ready">
-                    <div class="status-number" id="status-ready">0</div>
-                    <div class="status-label">Ready for Pickup</div>
+                <div class="kpi-compact" style="background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);">
+                    <div class="kpi-value" id="new-customers-count">0</div>
+                    <div class="kpi-label">New Customers</div>
+                    <a href="all-customers.html" class="kpi-link">View All →</a>
                 </div>
             </div>
 
-            <!-- CHARTS -->
-            <div class="section-header" style="margin-bottom: 20px; margin-top: 40px;">
-                <h2 class="section-title">Analytics</h2>
+            <!-- ACTION BUTTONS -->
+            <div class="action-row" style="margin-bottom: 24px;">
+                <a href="../order-form.html" class="action-btn-large">+ Create New Order</a>
+                <a href="new-customer.html" class="action-btn-large action-btn-secondary">+ Add Customer</a>
+                <a href="reports.html" class="action-btn-large" style="background: #6B7280;">📊 View Reports</a>
             </div>
-            <div class="charts-grid">
-                <div class="chart-card">
-                    <div class="chart-title">Today's Order Status</div>
-                    <div class="chart-container">
-                        <canvas id="todaysStatusChart"></canvas>
+
+            <!-- TWO COLUMN LAYOUT -->
+            <div class="dashboard-container">
+                <!-- LEFT SECTION -->
+                <div class="left-section">
+                    <!-- Recent Orders -->
+                    <div class="compact-table">
+                        <h3>📋 Recent Orders</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Customer</th>
+                                    <th>Status</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-orders-table">
+                                <tr><td colspan="4" style="text-align: center; padding: 16px;">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Today's Pickups -->
+                    <div class="compact-table">
+                        <h3>📦 Today's Pickups</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Customer</th>
+                                    <th>Cake</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="todays-pickups-table">
+                                <tr><td colspan="4" style="text-align: center; padding: 16px;">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Tomorrow's Schedule -->
+                    <div class="compact-table">
+                        <h3>📅 Tomorrow's Schedule</h3>
+                        <div id="tomorrows-schedule"></div>
                     </div>
                 </div>
-                <div class="chart-card">
-                    <div class="chart-title">Top Selling Products</div>
-                    <div class="chart-container">
-                        <canvas id="topProductsChart"></canvas>
-                    </div>
-                </div>
-                <div class="chart-card">
-                    <div class="chart-title">Quarterly Revenue</div>
-                    <div class="chart-container">
-                        <canvas id="quarterlyRevenueChart"></canvas>
-                    </div>
-                </div>
-            </div>
 
-            <!-- TODAY'S PICKUPS TABLE -->
-            <div class="section-header" style="margin-bottom: 16px; margin-top: 40px;">
-                <h2 class="section-title">Today's Pickups</h2>
-                <a href="pending_pickups.html" class="section-link">View All →</a>
-            </div>
-            <div class="table-container">
-                <div class="table-content">
-                    <table id="todays-pickups-table">
-                        <thead>
-                            <tr>
-                                <th>Time</th>
-                                <th>Order ID</th>
-                                <th>Customer</th>
-                                <th>Cake</th>
-                                <th>Status</th>
-                                <th>Total</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td colspan="7" style="text-align: center; padding: 32px;">Loading...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                <!-- RIGHT SECTION - ANALYTICS -->
+                <div class="right-section">
+                    <div class="analytics-section">
+                        <h3>Today's Order Status</h3>
+                        <div class="mini-chart">
+                            <canvas id="todaysStatusChart"></canvas>
+                        </div>
+                    </div>
 
-            <!-- TOMORROW'S SCHEDULE -->
-            <div class="section-header" style="margin-bottom: 16px; margin-top: 40px;">
-                <h2 class="section-title">Tomorrow's Schedule Preview</h2>
-                <a href="#" class="section-link">View Full Schedule →</a>
-            </div>
-            <div class="table-container">
-                <div id="tomorrows-schedule" style="padding: 0;">
-                    <div class="schedule-item">
-                        <div class="schedule-time">Loading...</div>
-                        <div class="schedule-info"></div>
+                    <div class="analytics-section">
+                        <h3>Top Selling Products</h3>
+                        <div class="mini-chart">
+                            <canvas id="topProductsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="analytics-section">
+                        <h3>Weekly Revenue Trend</h3>
+                        <div class="mini-chart">
+                            <canvas id="quarterlyRevenueChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -173,5 +153,114 @@
     </main>
 
     <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!checkAuthentication()) return;
+            updateHeaderWithUserInfo();
+            initializeNav();
+            initializeMainDashboard();
+        });
+
+        function initializeMainDashboard() {
+            // Update KPIs
+            document.getElementById('pending-pickup-count').textContent = getTodaysPickups().length;
+            document.getElementById('todays-orders-count').textContent = dashboardData.orders.length;
+            document.getElementById('weekly-revenue').textContent = '$' + getWeeklyRevenue().toFixed(0);
+            document.getElementById('new-customers-count').textContent = getNewCustomers();
+            document.getElementById('header-pickup-count').textContent = getTodaysPickups().length;
+
+            // Populate tables
+            populateRecentOrdersTable();
+            populateTodaysPickupsCompact();
+            populateTomorrowsScheduleCompact();
+
+            // Initialize charts
+            initializeDashboardCharts();
+        }
+
+        function initializeDashboardCharts() {
+            // Today's Status Chart
+            const ctx1 = document.getElementById('todaysStatusChart');
+            if (ctx1) {
+                const statusCounts = getStatusCounts();
+                new Chart(ctx1, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Baking', 'Decorating', 'Ready'],
+                        datasets: [{
+                            data: [statusCounts.baking, statusCounts.decorating, statusCounts.ready],
+                            backgroundColor: ['#F59E0B', '#A855F7', '#10B981']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { font: { size: 11 } }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Top Products Chart
+            const ctx2 = document.getElementById('topProductsChart');
+            if (ctx2) {
+                const topProducts = getTopProducts();
+                new Chart(ctx2, {
+                    type: 'bar',
+                    data: {
+                        labels: topProducts.map(p => p.name),
+                        datasets: [{
+                            label: 'Orders',
+                            data: topProducts.map(p => p.count),
+                            backgroundColor: '#10B981'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+            }
+
+            // Weekly Revenue Chart
+            const ctx3 = document.getElementById('quarterlyRevenueChart');
+            if (ctx3) {
+                new Chart(ctx3, {
+                    type: 'line',
+                    data: {
+                        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                        datasets: [{
+                            label: 'Revenue',
+                            data: [340, 420, 380, 510, 460, 390, 435],
+                            borderColor: '#C44569',
+                            backgroundColor: 'rgba(196, 69, 105, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+            }
+        }
+    </script>
 </body>
 </html>
