@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Decorator Dashboard - Emily Bakes Cakes</title>
     <link rel="stylesheet" href="css/dashboard-redesigned.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         /* Ultra-Compact Dashboard Layout */
 
@@ -283,12 +283,6 @@
                 <div class="logo-text">Emily Bakes Cakes</div>
             </div>
         </div>
-        <div class="header-center">
-            <div class="header-user">
-                <div class="role-badge" id="staff-role">DECORATOR</div>
-                <div class="DECORATOR-name" id="staff-name">DECORATOR</div>
-            </div>
-        </div>
         <div class="header-right">
             <button class="header-btn" onclick="backToSite()">← Back to Site</button>
             <button class="logout-btn header-btn" onclick="handleLogout()">Logout</button>
@@ -298,7 +292,7 @@
     <!-- LEFT NAVIGATION -->
     <nav class="nav-sidebar">
         <ul>
-            <li><a href="DECORATOR-dashboard.html" class="nav-link active">Dashboard</a></li>
+            <li><a href="decorator-dashboard.html" class="nav-link active">Dashboard</a></li>
             <li><a href="all-orders.html" class="nav-link">View Orders</a></li>
             <li><a href="all-customers.html" class="nav-link">View Customers</a></li>
             <li><a href="view-products.html" class="nav-link">View Products</a></li>
@@ -487,9 +481,12 @@
             // Initialize charts
             setTimeout(() => {
                 if (typeof Chart !== 'undefined') {
+                    console.log('Chart.js loaded, initializing charts...');
                     initializeCharts();
+                } else {
+                    console.error('Chart.js not loaded!');
                 }
-            }, 100);
+            }, 200);
         }
 
         function populateTodaysPickups() {
