@@ -6,6 +6,169 @@
     <title>Manager Dashboard - Emily Bakes Cakes</title>
     <link rel="stylesheet" href="css/dashboard-redesigned.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="js/ux-enhancements.js"></script>
+    <style>
+        /* Additional styles for manager dashboard layout */
+        .charts-section {
+            margin-bottom: 24px;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .chart-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .chart-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .chart-container {
+            height: 280px;
+            position: relative;
+        }
+
+        .quick-actions-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .quick-action-btn {
+            padding: 14px 16px;
+            background: var(--bg-white);
+            border: 2px solid var(--border-light);
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.2s;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quick-action-btn:hover {
+            border-color: var(--primary);
+            background: rgba(196, 69, 105, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .quick-action-btn.primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-color: transparent;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .quick-action-btn.primary:hover {
+            box-shadow: 0 6px 16px rgba(196, 69, 105, 0.4);
+        }
+
+        .quick-action-btn.secondary {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+            border-color: transparent;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .quick-action-btn.secondary:hover {
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+
+        .quick-action-icon {
+            font-size: 24px;
+        }
+
+        .quick-action-text {
+            font-size: 13px;
+        }
+
+        .schedule-section {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--shadow-md);
+            margin-top: 24px;
+        }
+
+        .schedule-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .schedule-item {
+            padding: 12px;
+            background: var(--bg-light);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            font-size: 13px;
+        }
+
+        .schedule-item-time {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .schedule-item-customer {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .schedule-item-cake {
+            color: var(--text-secondary);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        @media (max-width: 1200px) {
+            .charts-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .quick-actions-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .charts-grid,
+            .quick-actions-container {
+                grid-template-columns: 1fr;
+            }
+
+            .schedule-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- HEADER -->
@@ -40,6 +203,7 @@
             <li><a href="manager-dashboard.html" class="nav-link active">📊 Dashboard</a></li>
             <li><a href="all-orders.html" class="nav-link">📋 View Orders</a></li>
             <li><a href="all-customers.html" class="nav-link">👥 View Customers</a></li>
+            <li><a href="view-products.html" class="nav-link">🎂 View Products</a></li>
             <li><a href="reports.html" class="nav-link">📈 Reports</a></li>
         </ul>
     </nav>
@@ -47,8 +211,32 @@
     <!-- MAIN CONTENT -->
     <main class="main-content">
         <div class="content">
-            <!-- KPIs WITH WORKING LINKS -->
-            <div class="kpi-row" style="margin-bottom: 20px;">
+            <!-- CHARTS SECTION (AT TOP) -->
+            <div class="charts-section">
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3 class="chart-title">📈 Revenue Trend (7 Days)</h3>
+                        <div class="chart-container">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <h3 class="chart-title">🍰 Popular Products</h3>
+                        <div class="chart-container">
+                            <canvas id="productsChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <h3 class="chart-title">📊 Order Status Distribution</h3>
+                        <div class="chart-container">
+                            <canvas id="statusChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KPIs STATS CARDS -->
+            <div class="kpi-row">
                 <div class="kpi-compact" style="background: linear-gradient(135deg, #C44569 0%, #9A3350 100%);">
                     <div class="kpi-value" id="pending-pickup-count">0</div>
                     <div class="kpi-label">Today's Pickups</div>
@@ -71,88 +259,177 @@
                 </div>
             </div>
 
-            <!-- ACTION BUTTONS -->
-            <div class="action-row" style="margin-bottom: 24px;">
-                <a href="../order-form.html" class="action-btn-large">+ Create New Order</a>
-                <a href="new-customer.html" class="action-btn-large action-btn-secondary">+ Add Customer</a>
-                <a href="reports.html" class="action-btn-large" style="background: #6B7280;">📊 View Reports</a>
+            <!-- QUICK ACTIONS (HORIZONTAL BUTTONS) -->
+            <div class="quick-actions-container">
+                <a href="../order-form.html" class="quick-action-btn primary">
+                    <span class="quick-action-icon">📝</span>
+                    <span class="quick-action-text">Create New Order</span>
+                </a>
+                <a href="new-customer.html" class="quick-action-btn secondary">
+                    <span class="quick-action-icon">👤</span>
+                    <span class="quick-action-text">Add Customer</span>
+                </a>
+                <a href="all-orders.html" class="quick-action-btn">
+                    <span class="quick-action-icon">📋</span>
+                    <span class="quick-action-text">View Orders</span>
+                </a>
+                <a href="reports.html" class="quick-action-btn">
+                    <span class="quick-action-icon">📊</span>
+                    <span class="quick-action-text">View Reports</span>
+                </a>
             </div>
 
-            <!-- TWO COLUMN LAYOUT -->
-            <div class="dashboard-container">
-                <!-- LEFT SECTION --><div class="left-section">
-                    <!-- Recent Orders -->
-                    <div class="compact-table">
-                        <h3>📋 Recent Orders</h3>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Customer</th>
-                                    <th>Status</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody id="recent-orders-table">
-                                <tr><td colspan="4" style="text-align: center; padding: 16px;">Loading...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Today's Pickups -->
-                    <div class="compact-table">
-                        <h3>📦 Today's Pickups</h3>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>Customer</th>
-                                    <th>Cake</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="todays-pickups-table">
-                                <tr><td colspan="4" style="text-align: center; padding: 16px;">Loading...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Tomorrow's Schedule -->
-                    <div class="compact-table">
-                        <h3>📅 Tomorrow's Schedule</h3>
-                        <div id="tomorrows-schedule"></div>
-                    </div>
+            <!-- TWO COLUMN TABLE LAYOUT -->
+            <div class="dashboard-grid">
+                <!-- LEFT COLUMN - RECENT ORDERS -->
+                <div class="data-table-section">
+                    <h3 class="section-title">📋 Recent Orders</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Customer</th>
+                                <th>Status</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-orders-table">
+                            <tr><td colspan="4" style="text-align: center; padding: 16px;">Loading...</td></tr>
+                        </tbody>
+                    </table>
                 </div>
 
-                <!-- RIGHT SECTION - ANALYTICS -->
-                <div class="right-section">
-                    <div class="analytics-section">
-                        <h3>Today's Order Status</h3>
-                        <div class="mini-chart">
-                            <canvas id="todaysStatusChart"></canvas>
-                        </div>
-                    </div>
+                <!-- RIGHT COLUMN - TODAY'S PICKUPS -->
+                <div class="data-table-section">
+                    <h3 class="section-title">📦 Today's Pickups</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Customer</th>
+                                <th>Cake</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="todays-pickups-table">
+                            <tr><td colspan="4" style="text-align: center; padding: 16px;">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-                    <div class="analytics-section">
-                        <h3>Top Selling Products</h3>
-                        <div class="mini-chart">
-                            <canvas id="topProductsChart"></canvas>
-                        </div>
+            <!-- TOMORROW'S SCHEDULE SECTION -->
+            <div class="schedule-section">
+                <h3 class="schedule-title">📅 Tomorrow's Schedule</h3>
+                <div class="schedule-grid" id="tomorrows-schedule">
+                    <div class="schedule-item">
+                        <div class="schedule-item-time">9:00 AM</div>
+                        <div class="schedule-item-customer">Sarah Johnson</div>
+                        <div class="schedule-item-cake">Chocolate Velvet</div>
                     </div>
-
-                    <div class="analytics-section">
-                        <h3>Weekly Revenue Trend</h3>
-                        <div class="mini-chart">
-                            <canvas id="quarterlyRevenueChart"></canvas>
-                        </div>
+                    <div class="schedule-item">
+                        <div class="schedule-item-time">11:30 AM</div>
+                        <div class="schedule-item-customer">John Smith</div>
+                        <div class="schedule-item-cake">Strawberry Bliss</div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="schedule-item-time">2:00 PM</div>
+                        <div class="schedule-item-customer">Mike Brown</div>
+                        <div class="schedule-item-cake">Vanilla Dream</div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="schedule-item-time">3:00 PM</div>
+                        <div class="schedule-item-customer">Lisa Wilson</div>
+                        <div class="schedule-item-cake">Lemon Zest</div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="schedule-item-time">4:30 PM</div>
+                        <div class="schedule-item-customer">Emily Davis</div>
+                        <div class="schedule-item-cake">Red Velvet</div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <script src="js/main.js"></script>
     <script>
+        const dashboardData = {
+            orders: [
+                { id: 1, customer: 'Sarah Johnson', status: 'ready', total: 145, pickup: '10:00 AM', cake: 'Chocolate Velvet' },
+                { id: 2, customer: 'Mike Brown', status: 'decorating', total: 120, pickup: '2:00 PM', cake: 'Vanilla Dream' },
+                { id: 3, customer: 'Emily Davis', status: 'baking', total: 165, pickup: '4:30 PM', cake: 'Red Velvet' },
+                { id: 4, customer: 'John Smith', status: 'ready', total: 135, pickup: '11:30 AM', cake: 'Strawberry Bliss' },
+                { id: 5, customer: 'Lisa Wilson', status: 'ready', total: 150, pickup: '3:00 PM', cake: 'Lemon Zest' }
+            ]
+        };
+
+        function checkAuthentication() {
+            return true;
+        }
+
+        function updateHeaderWithUserInfo() {
+            document.getElementById('staff-name').textContent = 'Manager Admin';
+            document.getElementById('staff-role').textContent = 'Manager';
+        }
+
+        function initializeNav() {
+            // Navigation already styled
+        }
+
+        function backToSite() {
+            window.location.href = '../index.html';
+        }
+
+        function handleLogout() {
+            alert('Logging out...');
+            window.location.href = '../index.html';
+        }
+
+        function getTodaysPickups() {
+            return dashboardData.orders.filter(o => o.status === 'ready');
+        }
+
+        function getWeeklyRevenue() {
+            return dashboardData.orders.reduce((sum, o) => sum + o.total, 0);
+        }
+
+        function getNewCustomers() {
+            return 12;
+        }
+
+        function getStatusCounts() {
+            return {
+                ready: dashboardData.orders.filter(o => o.status === 'ready').length,
+                decorating: dashboardData.orders.filter(o => o.status === 'decorating').length,
+                baking: dashboardData.orders.filter(o => o.status === 'baking').length
+            };
+        }
+
+        function populateRecentOrdersTable() {
+            const tbody = document.getElementById('recent-orders-table');
+            tbody.innerHTML = dashboardData.orders.slice(0, 5).map(order => `
+                <tr>
+                    <td>#${order.id}</td>
+                    <td>${order.customer}</td>
+                    <td><span class="status-badge status-${order.status}">${order.status}</span></td>
+                    <td>$${order.total}</td>
+                </tr>
+            `).join('');
+        }
+
+        function populateTodaysPickupsCompact() {
+            const tbody = document.getElementById('todays-pickups-table');
+            const pickups = getTodaysPickups();
+            tbody.innerHTML = pickups.map(order => `
+                <tr>
+                    <td>${order.pickup}</td>
+                    <td>${order.customer}</td>
+                    <td>${order.cake}</td>
+                    <td><span class="status-badge status-${order.status}">${order.status}</span></td>
+                </tr>
+            `).join('');
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             if (!checkAuthentication()) return;
             updateHeaderWithUserInfo();
@@ -171,70 +448,15 @@
             // Populate tables
             populateRecentOrdersTable();
             populateTodaysPickupsCompact();
-            populateTomorrowsScheduleCompact();
 
-            // Initialize charts
-            initializeManagerCharts();
+            initializeCharts();
         }
 
-        function initializeManagerCharts() {
-            // Today's Status Chart
-            const ctx1 = document.getElementById('todaysStatusChart');
-            if (ctx1) {
-                const statusCounts = getStatusCounts();
-                new Chart(ctx1, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Baking', 'Decorating', 'Ready'],
-                        datasets: [{
-                            data: [statusCounts.baking, statusCounts.decorating, statusCounts.ready],
-                            backgroundColor: ['#F59E0B', '#A855F7', '#10B981']
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: true,
-                        plugins: {
-                            legend: {
-                                position: 'bottom',
-                                labels: { font: { size: 11 } }
-                            }
-                        }
-                    }
-                });
-            }
-
-            // Top Products Chart
-            const ctx2 = document.getElementById('topProductsChart');
-            if (ctx2) {
-                const topProducts = getTopProducts();
-                new Chart(ctx2, {
-                    type: 'bar',
-                    data: {
-                        labels: topProducts.map(p => p.name),
-                        datasets: [{
-                            label: 'Orders',
-                            data: topProducts.map(p => p.count),
-                            backgroundColor: '#10B981'
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: true,
-                        plugins: {
-                            legend: { display: false }
-                        },
-                        scales: {
-                            y: { beginAtZero: true }
-                        }
-                    }
-                });
-            }
-
-            // Weekly Revenue Chart
-            const ctx3 = document.getElementById('quarterlyRevenueChart');
-            if (ctx3) {
-                new Chart(ctx3, {
+        function initializeCharts() {
+            // Revenue Trend Chart
+            const revenueCtx = document.getElementById('revenueChart');
+            if (revenueCtx) {
+                new Chart(revenueCtx, {
                     type: 'line',
                     data: {
                         labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -244,17 +466,115 @@
                             borderColor: '#C44569',
                             backgroundColor: 'rgba(196, 69, 105, 0.1)',
                             fill: true,
-                            tension: 0.4
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointHoverRadius: 6,
+                            pointBackgroundColor: '#C44569',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2
                         }]
                     },
                     options: {
                         responsive: true,
-                        maintainAspectRatio: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { 
+                                    callback: v => '$' + v,
+                                    font: { size: 10 }
+                                },
+                                grid: { color: '#F3F4F6' }
+                            },
+                            x: {
+                                ticks: { font: { size: 10 } },
+                                grid: { display: false }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Popular Products Chart
+            const productsCtx = document.getElementById('productsChart');
+            if (productsCtx) {
+                new Chart(productsCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Chocolate', 'Vanilla', 'Red Velvet', 'Strawberry', 'Lemon'],
+                        datasets: [{
+                            label: 'Orders',
+                            data: [2, 2, 2, 2, 2],
+                            backgroundColor: [
+                                '#10B981',
+                                '#10B981',
+                                '#10B981',
+                                '#10B981',
+                                '#10B981'
+                            ],
+                            borderRadius: 4,
+                            borderSkipped: false
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
                         plugins: {
                             legend: { display: false }
                         },
                         scales: {
-                            y: { beginAtZero: true }
+                            x: { 
+                                beginAtZero: true,
+                                max: 2.5,
+                                ticks: { font: { size: 10 } },
+                                grid: { color: '#F3F4F6' }
+                            },
+                            y: {
+                                ticks: { font: { size: 10 } },
+                                grid: { display: false }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Order Status Distribution Chart
+            const statusCtx = document.getElementById('statusChart');
+            if (statusCtx) {
+                const statusCounts = getStatusCounts();
+                new Chart(statusCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Ready', 'Decorating', 'Baking'],
+                        datasets: [{
+                            data: [statusCounts.ready || 3, statusCounts.decorating || 1, statusCounts.baking || 1],
+                            backgroundColor: [
+                                '#10B981',
+                                '#A855F7',
+                                '#F59E0B'
+                            ],
+                            borderColor: '#fff',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { 
+                                    font: { size: 10 },
+                                    usePointStyle: true,
+                                    padding: 10
+                                }
+                            }
                         }
                     }
                 });
